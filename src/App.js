@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import List from './components/List';
+import Form from './components/Form';
 import './App.css';
 
 function App() {
+  const [ users, setUsers ] = useState([ 'Peter', 'Linsen' ]);
+  const [ input, setInput ] = useState('');
+
+  function handleRemoveUser(i) {
+    const nextUsers = [ ...users ];
+    nextUsers.splice(i, 1);
+    setUsers(nextUsers);
+  }
+
+  function handleInput(event) {
+    setInput(event.target.value);
+  }
+
+  function submitName() {
+    if (input !== '') {
+      const nextUsers = [ ...users ];
+      nextUsers.push(input);
+      setUsers(nextUsers);
+      setInput('');
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <List handleRemoveUser={handleRemoveUser} data={users} />
+      <Form handleSubmit={submitName} input={input} handleInput={handleInput} />
     </div>
   );
 }
